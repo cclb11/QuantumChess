@@ -109,7 +109,7 @@ public class Tablero {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println(getPiece(e.getX(), e.getY()).nombreFicha);
+                System.out.println("Se oprimio la ficha "+getPiece(e.getX(), e.getY()).nombreFicha);
             }
 
             @Override
