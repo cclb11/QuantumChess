@@ -23,15 +23,17 @@ public class Tablero {
 
     JFrame frame = new JFrame();
     public static LinkedList<Fichas> ps= new LinkedList<>();//Creamos una lista para almacenar las fichas
-
+    public static Fichas piezaSeleccionada = null;
+    
+    
     public Tablero()throws IOException{
 
-        BufferedImage fNegra=ImageIO.read(new File("fRoja.png"));//Importamos la imagen de la ficha.
-        BufferedImage fRoja=ImageIO.read(new File("fAzul.png"));
+        BufferedImage fAzul=ImageIO.read(new File("fAzul.png"));//Importamos la imagen de la ficha.
+        BufferedImage fRoja=ImageIO.read(new File("fRoja.png"));
         
         Image img[]=new Image[2];//Metemos los dos colores de  fichas en un arreglo
-        img[0]=fNegra;
-        img[1]=fRoja;
+        img[0]=fRoja;
+        img[1]=fAzul;
         
         Fichas negra1=new Fichas(1,0,"azul",false,ps);
         Fichas negra2=new Fichas(3,0,"azul",false,ps);
@@ -108,12 +110,15 @@ public class Tablero {
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {//Lugar donde se preciona en el tablero
                 System.out.println("Se oprimio la ficha "+getPiece(e.getX(), e.getY()).nombreFicha);
+                piezaSeleccionada=getPiece(e.getX(), e.getY());
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {//Cuando se suelta el mouse
+                piezaSeleccionada.moverFicha(e.getX()*64,e.getY()*64);
+                frame.repaint();
             }
 
             @Override
@@ -127,6 +132,12 @@ public class Tablero {
         frame.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                if (piezaSeleccionada!=null) { //Se mueve la ficha al mantener precionado el mouse
+                    piezaSeleccionada.xp=e.getX();
+                    piezaSeleccionada.yp=e.getY();
+                    frame.repaint();
+                    System.out.println(e.getX()+" "+e.getY()+" Esta es la nueva posicion");
+                }
             }
 
             @Override
